@@ -1,3 +1,0 @@
-name: artem1
-email: artem1@mail.ru
-password: artem1
