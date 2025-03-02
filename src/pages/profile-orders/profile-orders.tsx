@@ -7,7 +7,7 @@ import { getOrdersUser, selectUserOrders } from '@slices';
 export const ProfileOrders: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
-  const orders: TOrder[] = useSelector(selectUserOrders);
+  const orders = useSelector(selectUserOrders);
 
   useEffect(() => {
     dispatch(getOrdersUser());

@@ -9,7 +9,7 @@ export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoadingOrder);
-  const orders: TOrder[] = useSelector(selectOrders);
+  const orders = useSelector(selectOrders);
 
   useEffect(() => {
     dispatch(getOrders());

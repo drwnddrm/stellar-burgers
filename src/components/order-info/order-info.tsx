@@ -11,7 +11,7 @@ export const OrderInfo: FC = () => {
   const { number } = useParams();
   const orderData = useSelector(selectOrder);
 
-  const ingredients: TIngredient[] = useSelector(selectIngredients);
+  const ingredients = useSelector(selectIngredients);
 
   useEffect(() => {
     dispatch(getOrderByNumber(Number(number)));
