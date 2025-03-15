@@ -21,7 +21,7 @@ type TUserState = {
   error: string;
 };
 
-const initialState: TUserState = {
+export const initialUserState: TUserState = {
   userData: null,
   orders: [],
   loadingUser: false,
@@ -94,7 +94,7 @@ export const forgotPassword = createAsyncThunk(
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: initialUserState,
   reducers: {},
   selectors: {
     selectUserData: (state) => state.userData,

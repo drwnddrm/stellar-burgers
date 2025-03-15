@@ -17,7 +17,7 @@ type TconstructorState = {
   error: string;
 };
 
-const initialState: TconstructorState = {
+export const initialConstructorState: TconstructorState = {
   constructorLoading: false,
   burger: {
     bun: null,
@@ -37,7 +37,7 @@ export const orderBurger = createAsyncThunk(
 
 export const constructorSlice = createSlice({
   name: 'constuctor',
-  initialState,
+  initialState: initialConstructorState,
   reducers: {
     addIngredients: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
@@ -68,7 +68,7 @@ export const constructorSlice = createSlice({
       ingredients.splice(to, 0, ingredients.splice(from, 1)[0]);
       state.burger.ingredients = ingredients;
     },
-    resetBurger: () => initialState
+    resetBurger: () => initialConstructorState
   },
   selectors: {
     selectBurger: (state) => state.burger,
