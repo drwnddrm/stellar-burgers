@@ -1,55 +1,60 @@
+const bun = '[data-cy="data-bun"]';
+const main = '[data-cy="data-main"]';
+const sauce = '[data-cy="data-sauce"]';
+const ingredients = '[data-cy="burger-ingredients"]';
+const bunUp = '[data-cy="burger-bun-up"]';
+const bunDown = '[data-cy="burger-bun-down"]';
+const modal = '[data-cy="modal"]';
+const overlay = '[data-cy="overlay"]';
+const closeButton = '[data-cy="close-btn"]';
+const orderBurger = '[data-cy="order-burger"]';
+
 describe('Проверка работы страницы конструктора', () => {
   beforeEach(() => {
     cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' }).as(
       'getIngredients'
     );
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
     cy.wait('@getIngredients');
   });
 
   it('Проверка добавления ингредиентов в конструктор', () => {
-    cy.get('[data-cy="data-bun"]').should('exist').find('button').click();
-    cy.get('[data-cy="data-sauce"]').should('exist').find('button').click();
-    cy.get('[data-cy="data-main"]').should('exist').find('button').click();
+    cy.get(bun).should('exist').find('button').click();
+    cy.get(sauce).should('exist').find('button').click();
+    cy.get(main).should('exist').find('button').click();
 
-    cy.get('[data-cy="burger-bun-up"]')
-      .contains('Краторная булка N-200i')
-      .should('exist');
-    cy.get('[data-cy="burger-bun-down"]')
-      .contains('Краторная булка N-200i')
-      .should('exist');
-    cy.get('[data-cy="burger-ingredients"]')
-      .contains('Соус Spicy-X')
-      .should('exist');
-    cy.get('[data-cy="burger-ingredients"]')
+    cy.get(bunUp).contains('Краторная булка N-200i').should('exist');
+    cy.get(bunDown).contains('Краторная булка N-200i').should('exist');
+    cy.get(ingredients).contains('Соус Spicy-X').should('exist');
+    cy.get(ingredients)
       .contains('Филе Люминесцентного тетраодонтимформа')
       .should('exist');
   });
 
   it('Проверка открытия модального окна ингредиента', () => {
-    cy.get('[data-cy="data-main"]').should('exist').click();
+    cy.get(main).should('exist').click();
 
-    cy.get('[data-cy="modal"]').should('be.visible');
+    cy.get(modal).should('be.visible');
 
-    cy.get('[data-cy="modal"]')
+    cy.get(modal)
       .contains('Филе Люминесцентного тетраодонтимформа')
       .should('exist');
 
-    cy.get('[data-cy="close-btn"]').should('exist');
+    cy.get(closeButton).should('exist');
   });
 
   it('Проверка закрытия модального окна ингредиента по нажатию на кнопку "Закрыть" ', () => {
-    cy.get('[data-cy="data-main"]').should('exist').click();
+    cy.get(main).should('exist').click();
 
-    cy.get('[data-cy="close-btn"]').should('exist').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
+    cy.get(closeButton).should('exist').click();
+    cy.get(modal).should('not.exist');
   });
 
   it('Проверка закрытия модального окна ингредиента по нажатию на оверлей', () => {
-    cy.get('[data-cy="data-main"]').should('exist').click();
+    cy.get(main).should('exist').click();
 
-    cy.get('[data-cy="overlay"]').should('exist').click({ force: true });
-    cy.get('[data-cy="modal"]').should('not.exist');
+    cy.get(overlay).should('exist').click({ force: true });
+    cy.get(modal).should('not.exist');
   });
 });
 
@@ -70,7 +75,7 @@ describe('Проверка создания заказа на странице �
     cy.setCookie('accessToken', 'test-access');
     localStorage.setItem('refreshToken', 'test-refresh');
 
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
     cy.wait('@getIngredients');
     cy.wait('@getUser');
   });
@@ -81,45 +86,29 @@ describe('Проверка создания заказа на странице �
   });
 
   it('Проверка создания заказа, закрытия модального окна и очистки конструктора', () => {
-    cy.get('[data-cy="data-bun"]').should('exist').find('button').click();
-    cy.get('[data-cy="data-sauce"]').should('exist').find('button').click();
-    cy.get('[data-cy="data-main"]').should('exist').find('button').click();
+    cy.get(bun).should('exist').find('button').click();
+    cy.get(sauce).should('exist').find('button').click();
+    cy.get(main).should('exist').find('button').click();
 
-    cy.get('[data-cy="burger-bun-up"]')
-      .contains('Краторная булка N-200i')
-      .should('exist');
-    cy.get('[data-cy="burger-bun-down"]')
-      .contains('Краторная булка N-200i')
-      .should('exist');
-    cy.get('[data-cy="burger-ingredients"]')
-      .contains('Соус Spicy-X')
-      .should('exist');
-    cy.get('[data-cy="burger-ingredients"]')
+    cy.get(bunUp).contains('Краторная булка N-200i').should('exist');
+    cy.get(bunDown).contains('Краторная булка N-200i').should('exist');
+    cy.get(ingredients).contains('Соус Spicy-X').should('exist');
+    cy.get(ingredients)
       .contains('Филе Люминесцентного тетраодонтимформа')
       .should('exist');
 
-    cy.get('[data-cy="order-burger"]').find('button').should('exist').click();
+    cy.get(orderBurger).find('button').should('exist').click();
     cy.wait('@postOrder');
 
-    cy.get('[data-cy="modal"]').should('be.visible').contains('71074');
-    cy.get('[data-cy="modal"]')
-      .find('button')
-      .should('exist')
-      .click()
-      .should('not.exist');
+    cy.get(modal).should('be.visible').contains('71074');
+    cy.get(modal).find('button').should('exist').click().should('not.exist');
 
-    cy.get('[data-cy="burger-bun-up"]').should('not.exist');
+    cy.get(bunUp).should('not.exist');
 
-    cy.get('[data-cy="burger-bun-down"]').should('not.exist');
+    cy.get(bunDown).should('not.exist');
 
-    cy.get('[data-cy="burger-ingredients"]')
-      .contains('Выберите начинку')
-      .should('exist');
+    cy.get(ingredients).contains('Выберите начинку').should('exist');
 
-    cy.get('[data-cy="order-burger"]')
-      .find('p')
-      .should('exist')
-      .contains('0')
-      .should('exist');
+    cy.get(orderBurger).find('p').should('exist').contains('0').should('exist');
   });
 });
